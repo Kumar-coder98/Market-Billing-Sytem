@@ -1,0 +1,116 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #f7f8fa;
+  color: #333;
+}
+
+/* Header Section */
+.header-container {
+  background: linear-gradient(135deg, #216869 0%, #2c7a78 100%);
+  border-bottom: 2px solid #1f5f5d;
+}
+
+.header-container h1 {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Content Layout */
+.content-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Form Section */
+.form-container {
+  background: #ffffff; 
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.form-container h3 {
+  font-weight: 500;
+  color: #2c7a78;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #444;
+}
+
+/* Buttons */
+.add-btn {
+  background: #1abc9c; /* Vibrant teal color for the add button */
+  color: #fff;
+  font-weight: 700; 
+  border: none;
+  transition: background 0.3s, transform 0.2s;
+}
+.add-btn:hover {
+  background: #16a085; 
+  transform: scale(1.02);
+}
+
+/* Total Display */
+.total {
+  background: #effcfb;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #2c7a78;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Transaction List */
+.list-container {
+  padding: 20px;
+  min-height: 300px;
+  position: relative;
+}
+
+.transaction {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.transaction p {
+  margin: 0 15px 10px 0;
+  font-weight: 400;
+  color: #333;
+}
+
+.transaction p strong {
+  color: #2c7a78;
+  margin-right: 5px;
+}
+
+/* Remove Button */
+.remove-btn {
+  background: #d9534f;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  transition: background 0.3s;
+}
+.remove-btn:hover {
+  background: #c9302c;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+.transaction p {
+    margin-right: 0;
+}
+}
