@@ -239,18 +239,23 @@ const printBill = () => {
 
     billWindow.document.close(); // Close the document to finish loading
     billWindow.print(); // Trigger the print dialog
-
+    currentOrderId++; // Increment the order ID for the next set of transactions
     // Reset the total and current transactions after printing the bill
     total = 0;
     currentTransactions = [];
     renderTotal(); // Re-render the total
     renderTransactionHistory(); // Re-render the transaction history (this will show the placeholder image again)
-    currentOrderId++; // Increment the order ID for the next set of transactions
+   
 };
 
 // Function to view all transactions in a new window
 // Function to view all transactions in a new window
+// Function to view all transactions in a new window
+
 const viewAllTransactions = () => {
+    // Reload transactions from localStorage in case they have been updated
+    allTransactions = JSON.parse(localStorage.getItem('allTransactions')) || [];
+
     const transactionWindow = window.open('', '_blank'); // Open a new window for viewing all transactions
     // Generate and write the HTML for displaying all transactions in the new window
     transactionWindow.document.write(`
@@ -313,28 +318,48 @@ const viewAllTransactions = () => {
                         `).join('')}
                     </tbody>
                 </table>
+                <script>
+                    // Add event listener for delete buttons
+                    document.querySelectorAll('.delete-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const idx = parseInt(e.target.dataset.index); // Get the index of the transaction to delete
+
+                            // Retrieve updated transactions from localStorage
+                            let transactions = JSON.parse(localStorage.getItem('allTransactions')) || [];
+                            transactions.splice(idx, 1); // Remove the transaction at the specified index
+                            localStorage.setItem('allTransactions', JSON.stringify(transactions)); // Save the updated transactions
+
+                            // Remove the row from the table without refreshing the page
+                            e.target.closest('tr').remove();
+                        });
+                    });
+                </script>
             </body>
         </html>
     `);
 
     transactionWindow.document.close(); // Close the document to finish loading
-
-    // Add event listener for delete buttons
-    transactionWindow.document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const idx = parseInt(e.target.dataset.index); // Get the index of the transaction to delete
-
-            // Remove the transaction from the allTransactions array
-            allTransactions.splice(idx, 1);
-
-            // Save the updated transactions to localStorage
-            saveTransactions();
-
-            // Re-render the transactions in the new window
-            viewAllTransactions(); // Re-call the function to reload the transaction list without the deleted entry
-        });
-    });
 };
+
+// Function to add a new transaction
+const addNewTransaction = (itemName, itemPrice, itemQuantity) => {
+    const totalAmount = itemPrice * itemQuantity; // Calculate the total amount for the current item
+
+    const transaction = {
+        orderId: currentOrderId++, // Assign a unique order ID and increment for the next transaction
+        itemName: itemName, // Store the item name
+        itemPrice: itemPrice, // Store the price of the item
+        itemQuantity: itemQuantity, // Store the quantity of the item
+        totalAmount: totalAmount, // Store the calculated total amount for this transaction
+        timestamp: new Date().toLocaleString(), // Store the current timestamp as a string
+    };
+
+    allTransactions.push(transaction); // Save the transaction to the overall list
+    localStorage.setItem('allTransactions', JSON.stringify(allTransactions)); // Save to localStorage
+};
+
+// Call this function once when the page is loaded to load transactions
+loadTransactions();
 
 // Re-create the "View All Transactions" and "Print Bill" buttons and add event listeners outside of the render function
 const createTransactionButtons = () => {
